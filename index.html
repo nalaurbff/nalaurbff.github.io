@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toast's Commissions</title>
+<style>
+    /* Resetting default margins */
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #e6dac3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: sans-serif;
+    }
+
+    .main-wrapper {
+        width: 100%;
+        max-width: 900px; 
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .sticky-header-wrapper {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        width: 100%;
+    }
+
+    .image-container {
+        position: relative;
+        width: 100%;
+        display: block;
+    }
+
+    .toast-header {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* --- THE INTERACTIVE HOTSPOTS --- */
+    .hotspot {
+        position: absolute;
+        display: block;
+        transition: transform 0.2s ease;
+    }
+
+    .hotspot img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; 
+        display: block;
+    }
+
+    .hotspot:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+
+    /* Tweak percentages if they still don't line up perfectly */
+    #spot-x        { top: 12%; left: 51%; width: 5.5%; height: 8%; }
+    #spot-tg       { top: 12%; left: 57.5%; width: 5.5%; height: 8%; }
+    #spot-fa       { top: 12%; left: 63.5%; width: 5.5%; height: 8%; }
+    
+    #spot-speaker  { top: 72%; left: 1%; width: 7%; height: 26%; }
+    #spot-tips     { top: 69%; left: 9%; width: 10%; height: 29%; }
+    #spot-plushie  { top: 69%; left: 19%; width: 8%; height: 29%; }
+
+    /* The dialogue button layout */
+    .dialogue-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 20px;
+        background-color: #e6dac3;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .action-btn {
+        flex: 1; 
+        padding: 15px;
+        background-color: #f4f4f4;
+        border: 2px solid #000;
+        color: #000;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.2s ease;
+    }
+
+    .action-btn:hover {
+        background-color: #ddd; 
+    }
+
+    /* --- THE HIDDEN COMMISSION SECTION --- */
+    #commission-dropdown {
+        display: none; 
+        width: 100%;
+        padding: 0 20px 20px 20px;
+        box-sizing: border-box;
+        text-align: center;
+        background-color: #e6dac3;
+    }
+
+    #commission-dropdown h2 {
+        margin-top: 0;
+        color: #000;
+    }
+
+    .price-sheet {
+        width: 100%;
+        height: auto;
+        border: 2px solid #000;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
+</style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    
+    <div class="sticky-header-wrapper">
+        <div class="image-container">
+            <img src="welcome!.jpg" alt="Toast at the desk" class="toast-header">
+            
+            <!-- Nala's Socials -->
+            <a href="https://x.com/NaLa_urBFF" class="hotspot" id="spot-x" title="Twitter/X" target="_blank">
+                <img src="x.png" alt="Twitter">
+            </a>
+            <a href="https://t.me/+y32E2hvPs8gyYTgx" class="hotspot" id="spot-tg" title="Telegram" target="_blank">
+                <img src="tg.png" alt="Telegram">
+            </a>
+            <a href="https://www.furaffinity.net/user/nalaurbff/" class="hotspot" id="spot-fa" title="Furaffinity" target="_blank">
+                <img src="fa.png" alt="Furaffinity">
+            </a>
+            
+            <!-- Other interactive props -->
+            <a href="#" class="hotspot" id="spot-speaker" title="Playlist">
+                <img src="playlist.png" alt="Playlist">
+            </a>
+            <a href="#" class="hotspot" id="spot-tips" title="Tip Jar">
+                <img src="tips.png" alt="Tip Jar">
+            </a>
+            <!-- The Easter Egg Trigger -->
+            <a href="#" class="hotspot" id="spot-plushie" title="Enzeru Plushie" onclick="revealCreator(event)">
+                <img src="enzeru.png" alt="Enzeru Plushie">
+            </a>
+        </div>
+    </div>
+
+    <!-- The Main Dialogue Buttons (Added an ID here so the Javascript can find it) -->
+    <div class="dialogue-buttons" id="main-buttons">
+        <button class="action-btn" onclick="toggleCommissionMenu()">I'd like a commission!</button>
+        <button class="action-btn" onclick="window.open('https://trello.com/b/HPq2AzLO/nalas-queue', '_blank')">I want to see the queue!</button>
+        <button class="action-btn" onclick="window.open('https://t.me/enzeeeru', '_blank')">I'd like to make a complaint!</button>
+    </div>
+
+    <!-- The Hidden Commission Dropdown Menu -->
+    <div id="commission-dropdown">
+        <h2>Contact me!</h2>
+        <img src="pricesheet.png" alt="Nala's Price Sheet" class="price-sheet">
+        
+        <div class="dialogue-buttons" style="padding: 0;">
+            <button class="action-btn" onclick="window.open('https://drive.google.com/drive/folders/1QZfq1hvozTjcMVbbSJmc0Fsrn5vAIn6t?usp=drive_link', '_blank')">Read the TOS</button>
+            <button class="action-btn" onclick="window.open('https://t.me/enzeeeru', '_blank')">Contact Manager (Enzeru)</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- The Brains -->
+<script>
+    // Saving the original buttons so we can put them back later
+    const originalButtons = `
+        <button class="action-btn" onclick="toggleCommissionMenu()">I'd like a commission!</button>
+        <button class="action-btn" onclick="window.open('https://trello.com/b/HPq2AzLO/nalas-queue', '_blank')">I want to see the queue!</button>
+        <button class="action-btn" onclick="window.open('https://t.me/enzeeeru', '_blank')">I'd like to make a complaint!</button>
+    `;
+
+    function toggleCommissionMenu() {
+        var menu = document.getElementById("commission-dropdown");
+        if (menu.style.display === "none" || menu.style.display === "") {
+            menu.style.display = "block";
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        } else {
+            menu.style.display = "none";
+        }
+    }
+
+    function revealCreator(event) {
+        // Stops the page jump
+        if(event) event.preventDefault(); 
+        
+        var btnContainer = document.getElementById("main-buttons");
+        var menu = document.getElementById("commission-dropdown");
+
+        // Closes the commission menu if it was open
+        menu.style.display = "none";
+        
+        // Checks if your easter egg is currently showing
+        if (btnContainer.innerHTML.includes("Page made by Enzeru!")) {
+            // If it is, put the normal buttons back
+            btnContainer.innerHTML = originalButtons;
+        } else {
+            // If it's not, drop your signature and make it clickable to revert
+            btnContainer.innerHTML = '<button class="action-btn" style="width: 100%; cursor: pointer;" onclick="revealCreator()">Page made by Enzeru! (Click to close)</button>';
+        }
+    }
+</script>
+
+</body>
+</html>
