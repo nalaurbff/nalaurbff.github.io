@@ -102,7 +102,7 @@
 
     /* --- THE HIDDEN COMMISSION SECTION --- */
     #commission-dropdown {
-        display: none; /* Hidden by default */
+        display: none; 
         width: 100%;
         padding: 0 20px 20px 20px;
         box-sizing: border-box;
@@ -137,7 +137,7 @@
             <a href="https://x.com/NaLa_urBFF" class="hotspot" id="spot-x" title="Twitter/X" target="_blank">
                 <img src="x.png" alt="Twitter">
             </a>
-            <a href="https://t.me/NaLa_urBFF" class="hotspot" id="spot-tg" title="Telegram" target="_blank">
+            <a href="https://t.me/+y32E2hvPs8gyYTgx" class="hotspot" id="spot-tg" title="Telegram" target="_blank">
                 <img src="tg.png" alt="Telegram">
             </a>
             <a href="https://www.furaffinity.net/user/nalaurbff/" class="hotspot" id="spot-fa" title="Furaffinity" target="_blank">
@@ -151,24 +151,23 @@
             <a href="#" class="hotspot" id="spot-tips" title="Tip Jar">
                 <img src="tips.png" alt="Tip Jar">
             </a>
-            <a href="#" class="hotspot" id="spot-plushie" title="Enzeru Plushie">
+            <!-- The Easter Egg Trigger -->
+            <a href="#" class="hotspot" id="spot-plushie" title="Enzeru Plushie" onclick="revealCreator(event)">
                 <img src="enzeru.png" alt="Enzeru Plushie">
             </a>
         </div>
     </div>
 
-    <!-- The Main Dialogue Buttons -->
-    <div class="dialogue-buttons">
+    <!-- The Main Dialogue Buttons (Added an ID here so the Javascript can find it) -->
+    <div class="dialogue-buttons" id="main-buttons">
         <button class="action-btn" onclick="toggleCommissionMenu()">I'd like a commission!</button>
         <button class="action-btn" onclick="window.open('https://trello.com/b/HPq2AzLO/nalas-queue', '_blank')">I want to see the queue!</button>
-        <!-- Routes directly to your Telegram -->
         <button class="action-btn" onclick="window.open('https://t.me/enzeeeru', '_blank')">I'd like to make a complaint!</button>
     </div>
 
     <!-- The Hidden Commission Dropdown Menu -->
     <div id="commission-dropdown">
         <h2>Contact me!</h2>
-        <!-- Make sure to upload pricesheet.png to GitHub! -->
         <img src="pricesheet.png" alt="Nala's Price Sheet" class="price-sheet">
         
         <div class="dialogue-buttons" style="padding: 0;">
@@ -179,19 +178,45 @@
 
 </div>
 
-<!-- The Brains behind the dropdown button -->
+<!-- The Brains -->
 <script>
+    // Saving the original buttons so we can put them back later
+    const originalButtons = `
+        <button class="action-btn" onclick="toggleCommissionMenu()">I'd like a commission!</button>
+        <button class="action-btn" onclick="window.open('https://trello.com/b/HPq2AzLO/nalas-queue', '_blank')">I want to see the queue!</button>
+        <button class="action-btn" onclick="window.open('https://t.me/enzeeeru', '_blank')">I'd like to make a complaint!</button>
+    `;
+
     function toggleCommissionMenu() {
         var menu = document.getElementById("commission-dropdown");
         if (menu.style.display === "none" || menu.style.display === "") {
             menu.style.display = "block";
-            // Tells the browser to smoothly scroll down so the pricesheet isn't hidden off-screen
             window.scrollTo({
                 top: document.body.scrollHeight,
                 behavior: 'smooth'
             });
         } else {
             menu.style.display = "none";
+        }
+    }
+
+    function revealCreator(event) {
+        // Stops the page jump
+        if(event) event.preventDefault(); 
+        
+        var btnContainer = document.getElementById("main-buttons");
+        var menu = document.getElementById("commission-dropdown");
+
+        // Closes the commission menu if it was open
+        menu.style.display = "none";
+        
+        // Checks if your easter egg is currently showing
+        if (btnContainer.innerHTML.includes("Page made by Enzeru!")) {
+            // If it is, put the normal buttons back
+            btnContainer.innerHTML = originalButtons;
+        } else {
+            // If it's not, drop your signature and make it clickable to revert
+            btnContainer.innerHTML = '<button class="action-btn" style="width: 100%; cursor: pointer;" onclick="revealCreator()">Page made by Enzeru! (Click to close)</button>';
         }
     }
 </script>
